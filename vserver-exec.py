@@ -3,7 +3,7 @@
 """
     small script to quickly run commands in all vservers
 
-    L.S. Keijser <keijser@stone-it.com>
+    L.S. Keijser <leon@gotlinux.nl>
 
 """
 
@@ -28,7 +28,7 @@ parser.add_option("-n", "--node",
 parser.add_option("-c", "--command",
         action="store",
         dest="command",
-        help="command to be executed. If arguments are supplied, everything has to be between single quotes")
+        help="command to be executed (between quotes if args are supplied)")
 parser.add_option("-A", "--all",
         action="store_true",
         dest="all",
@@ -66,11 +66,13 @@ if options.all:
         p = subprocess.Popen(vs_cmd, stdout=subprocess.PIPE, shell=True)
         for o in p.stdout.readlines():
             print "\033[1;30m[%s]\033[1;m\t%s" % (vserver,o.rstrip())
+        print "---"
 else:
     vs_cmd = '/usr/sbin/vserver %s exec %s' % (options.node,options.command)
     if options.debug: print "\033[1;34m[DEBUG]\033[1;m\t\trunning command on %s: \033[1;37m%s\033[1;m" % (options.node,options.command)
     p = subprocess.Popen(vs_cmd, stdout=subprocess.PIPE, shell=True)
     for o in p.stdout.readlines():
         print "\033[1;30m[%s]\033[1;m\t%s" % (options.node,o.rstrip())
+    print "---"
 
 
